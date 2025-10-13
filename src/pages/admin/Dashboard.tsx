@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { PageTransition } from "@/components/PageTransition";
 import {
   BarChart,
   Bar,
@@ -11,36 +10,38 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { Eye, MessageSquare, FolderOpen, TrendingUp } from "lucide-react";
+import { Eye, MessageSquare, FolderOpen, TrendingUp, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminLayout } from "./AdminLayout";
+import { analytics } from "@/data/fakeData";
 
 const stats = [
   {
     title: "Total Views",
-    value: "12,543",
-    change: "+12.5%",
+    value: analytics.totalViews.toLocaleString(),
+    change: `+${analytics.viewsChange}%`,
     icon: Eye,
     color: "text-blue-500",
   },
   {
     title: "Projects",
-    value: "24",
-    change: "+3",
+    value: analytics.totalProjects.toString(),
+    change: `+${analytics.projectsChange}`,
     icon: FolderOpen,
     color: "text-purple-500",
   },
   {
     title: "Blog Posts",
-    value: "42",
-    change: "+5",
+    value: analytics.totalBlogPosts.toString(),
+    change: `+${analytics.postsChange}`,
     icon: MessageSquare,
     color: "text-green-500",
   },
   {
-    title: "Growth",
-    value: "23%",
-    change: "+4.1%",
-    icon: TrendingUp,
+    title: "Certificates",
+    value: analytics.totalCertificates.toString(),
+    change: "+2",
+    icon: Award,
     color: "text-orange-500",
   },
 ];
@@ -66,9 +67,8 @@ const projectsData = [
 
 export default function AdminDashboard() {
   return (
-    <PageTransition>
-      <div className="min-h-screen pt-20 pb-12">
-        <div className="container mx-auto px-4">
+    <AdminLayout>
+      <div className="p-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -209,8 +209,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </motion.div>
-        </div>
       </div>
-    </PageTransition>
+    </AdminLayout>
   );
 }

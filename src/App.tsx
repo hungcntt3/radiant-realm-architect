@@ -13,11 +13,17 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Skills from "./pages/Skills";
 import Projects from "./pages/Projects";
+import Certificates from "./pages/Certificates";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
+import ManageProjects from "./pages/admin/ManageProjects";
+import ManageBlog from "./pages/admin/ManageBlog";
+import ManageSkills from "./pages/admin/ManageSkills";
+import ManageCertificates from "./pages/admin/ManageCertificates";
+import ThemeSettings from "./pages/admin/ThemeSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,11 +41,17 @@ function AppRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/skills" element={<Skills />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/certificates" element={<Certificates />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/projects" element={<ManageProjects />} />
+          <Route path="/admin/blog" element={<ManageBlog />} />
+          <Route path="/admin/skills" element={<ManageSkills />} />
+          <Route path="/admin/certificates" element={<ManageCertificates />} />
+          <Route path="/admin/theme" element={<ThemeSettings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>

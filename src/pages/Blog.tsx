@@ -4,69 +4,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const blogPosts = [
-  {
-    id: 1,
-    title: "Building Modern Web Applications with React and TypeScript",
-    excerpt:
-      "Learn how to leverage TypeScript's type safety to build robust React applications that scale...",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
-    date: "2024-03-15",
-    readTime: "8 min read",
-    category: "Development",
-  },
-  {
-    id: 2,
-    title: "The Art of Animation in Web Design",
-    excerpt:
-      "Discover how to create engaging user experiences with thoughtful animations and micro-interactions...",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
-    date: "2024-03-10",
-    readTime: "6 min read",
-    category: "Design",
-  },
-  {
-    id: 3,
-    title: "Optimizing React Performance: Tips and Tricks",
-    excerpt:
-      "A comprehensive guide to improving your React app's performance with proven optimization techniques...",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
-    date: "2024-03-05",
-    readTime: "10 min read",
-    category: "Development",
-  },
-  {
-    id: 4,
-    title: "Understanding Tailwind CSS: A Utility-First Approach",
-    excerpt:
-      "Why utility-first CSS frameworks are changing the way we style modern web applications...",
-    image: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=800&q=80",
-    date: "2024-02-28",
-    readTime: "7 min read",
-    category: "CSS",
-  },
-  {
-    id: 5,
-    title: "Mastering Framer Motion for React",
-    excerpt:
-      "Create stunning animations and transitions with Framer Motion, the production-ready motion library...",
-    image: "https://images.unsplash.com/photo-1509966756634-9c23dd6e6815?w=800&q=80",
-    date: "2024-02-20",
-    readTime: "9 min read",
-    category: "Animation",
-  },
-  {
-    id: 6,
-    title: "Building Accessible Web Applications",
-    excerpt:
-      "Best practices for creating inclusive and accessible web experiences for all users...",
-    image: "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=800&q=80",
-    date: "2024-02-15",
-    readTime: "11 min read",
-    category: "Accessibility",
-  },
-];
+import { blogPosts } from "@/data/fakeData";
 
 export default function Blog() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });

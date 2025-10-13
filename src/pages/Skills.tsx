@@ -4,25 +4,9 @@ import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { skills } from "@/data/fakeData";
 
 const categories = ["All", "Frontend", "Backend", "Tools", "Design"];
-
-const skills = [
-  { name: "React", level: 95, category: "Frontend" },
-  { name: "TypeScript", level: 90, category: "Frontend" },
-  { name: "Next.js", level: 88, category: "Frontend" },
-  { name: "Tailwind CSS", level: 95, category: "Frontend" },
-  { name: "Framer Motion", level: 85, category: "Frontend" },
-  { name: "Node.js", level: 87, category: "Backend" },
-  { name: "Python", level: 80, category: "Backend" },
-  { name: "PostgreSQL", level: 82, category: "Backend" },
-  { name: "MongoDB", level: 78, category: "Backend" },
-  { name: "Git", level: 92, category: "Tools" },
-  { name: "Docker", level: 75, category: "Tools" },
-  { name: "AWS", level: 70, category: "Tools" },
-  { name: "Figma", level: 88, category: "Design" },
-  { name: "Adobe XD", level: 82, category: "Design" },
-];
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState("All");

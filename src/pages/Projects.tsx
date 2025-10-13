@@ -11,75 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-const projects = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    description: "A full-featured online shopping platform with payment integration",
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
-    tags: ["React", "Node.js", "Stripe", "MongoDB"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "Built a complete e-commerce solution with user authentication, product management, shopping cart, and payment processing using Stripe. Features include real-time inventory updates, order tracking, and admin dashboard.",
-  },
-  {
-    id: 2,
-    title: "Task Management App",
-    description: "Collaborative task manager with real-time updates",
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&q=80",
-    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "A modern task management application with real-time collaboration features, drag-and-drop interface, and team management capabilities. Built with Next.js and Supabase for optimal performance.",
-  },
-  {
-    id: 3,
-    title: "Portfolio Website",
-    description: "Creative portfolio with animations and 3D effects",
-    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80",
-    tags: ["React", "Three.js", "Framer Motion", "Tailwind"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "An immersive portfolio website featuring 3D graphics, smooth animations, and interactive elements. Showcases projects with detailed case studies and implements advanced web technologies.",
-  },
-  {
-    id: 4,
-    title: "Weather Dashboard",
-    description: "Real-time weather tracking with beautiful visualizations",
-    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?w=800&q=80",
-    tags: ["Vue.js", "Chart.js", "Weather API", "CSS"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "An elegant weather dashboard that provides real-time weather data, forecasts, and historical data visualization using Chart.js. Features location-based weather tracking and customizable alerts.",
-  },
-  {
-    id: 5,
-    title: "Social Media Clone",
-    description: "Full-stack social platform with messaging and posts",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
-    tags: ["React", "GraphQL", "PostgreSQL", "Redis"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "A feature-rich social media platform with user profiles, posts, comments, likes, real-time messaging, and notifications. Implements optimistic UI updates and efficient data caching.",
-  },
-  {
-    id: 6,
-    title: "AI Chat Assistant",
-    description: "Conversational AI interface with natural language processing",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-    tags: ["Next.js", "OpenAI", "Python", "FastAPI"],
-    github: "#",
-    demo: "#",
-    longDescription:
-      "An intelligent chatbot powered by OpenAI's GPT model, featuring context-aware conversations, code generation, and multi-language support. Built with a modern tech stack for optimal performance.",
-  },
-];
+import { projects } from "@/data/fakeData";
 
 export default function Projects() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
