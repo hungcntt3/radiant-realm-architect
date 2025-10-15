@@ -73,11 +73,8 @@ export default function Skills() {
                     transition={{ delay: i * 0.05 }}
                     className="p-6 rounded-2xl bg-card border border-border hover-lift hover:shadow-card"
                   >
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="mb-3">
                       <h3 className="text-lg font-semibold">{skill.name}</h3>
-                      <span className="text-sm font-medium text-primary">
-                        {skill.level}%
-                      </span>
                     </div>
 
                     {/* Progress Bar */}

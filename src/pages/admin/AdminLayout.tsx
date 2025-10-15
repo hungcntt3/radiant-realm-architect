@@ -1,5 +1,4 @@
-import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   LayoutDashboard,
@@ -9,24 +8,26 @@ import {
   Wrench,
   Settings,
   LogOut,
+  User,
+  Info,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-interface AdminLayoutProps {
-  children: ReactNode;
-}
-
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
+  { icon: User, label: "Profile", path: "/admin/profile" },
+  { icon: Info, label: "About", path: "/admin/about" },
   { icon: FolderOpen, label: "Projects", path: "/admin/projects" },
   { icon: FileText, label: "Blog Posts", path: "/admin/blog" },
   { icon: Wrench, label: "Skills", path: "/admin/skills" },
   { icon: Award, label: "Certificates", path: "/admin/certificates" },
+  { icon: Mail, label: "Contact", path: "/admin/contact" },
   { icon: Settings, label: "Theme", path: "/admin/theme" },
 ];
 
-export function AdminLayout({ children }: AdminLayoutProps) {
+export function AdminLayout() {
   const location = useLocation();
 
   return (
@@ -72,14 +73,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <Link to="/">
             <Button variant="ghost" className="w-full justify-start">
               <LogOut className="w-5 h-5 mr-3" />
-              Logout
+              Back to Site
             </Button>
           </Link>
         </div>
       </motion.aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">{children}</main>
+      <main className="flex-1 overflow-auto p-8">
+        <Outlet />
+      </main>
     </div>
   );
 }

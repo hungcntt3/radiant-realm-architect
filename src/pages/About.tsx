@@ -2,42 +2,7 @@ import { motion } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
 import { CheckCircle2 } from "lucide-react";
-
-const timeline = [
-  {
-    year: "2024",
-    title: "Senior Developer",
-    company: "Tech Company",
-    description: "Leading development of cutting-edge web applications",
-  },
-  {
-    year: "2022",
-    title: "Full Stack Developer",
-    company: "Startup Inc",
-    description: "Built scalable solutions for various clients",
-  },
-  {
-    year: "2020",
-    title: "Junior Developer",
-    company: "Digital Agency",
-    description: "Started my journey in web development",
-  },
-  {
-    year: "2019",
-    title: "Graduated",
-    company: "University",
-    description: "Computer Science degree with honors",
-  },
-];
-
-const values = [
-  "Clean, maintainable code",
-  "User-centered design",
-  "Continuous learning",
-  "Open source contribution",
-  "Team collaboration",
-  "Performance optimization",
-];
+import { personalInfo, timeline, values } from "@/data/fakeData";
 
 export default function About() {
   const [timelineRef, timelineInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -57,16 +22,10 @@ export default function About() {
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 About <span className="text-gradient">Me</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                I'm a passionate developer with a love for creating beautiful, functional,
-                and user-friendly digital experiences. With years of experience in web
-                development, I've worked on projects ranging from small business websites
-                to large-scale enterprise applications.
-              </p>
-              <p className="text-lg text-muted-foreground">
-                When I'm not coding, you can find me exploring new technologies, contributing
-                to open source, or sharing my knowledge through blog posts and tutorials.
-              </p>
+              <div
+                className="text-xl text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: personalInfo.bio }}
+              />
             </motion.div>
           </div>
         </section>
@@ -132,14 +91,14 @@ export default function About() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {values.map((value, i) => (
                   <motion.div
-                    key={value}
+                    key={value.id}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={valuesInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ delay: i * 0.1 }}
                     className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border hover-lift"
                   >
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-left">{value}</span>
+                    <span className="text-left">{value.text}</span>
                   </motion.div>
                 ))}
               </div>

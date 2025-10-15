@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { Navbar } from "./components/Navbar";
@@ -18,12 +18,16 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/admin/Login";
+import { AdminLayout } from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ManageProjects from "./pages/admin/ManageProjects";
 import ManageBlog from "./pages/admin/ManageBlog";
 import ManageSkills from "./pages/admin/ManageSkills";
 import ManageCertificates from "./pages/admin/ManageCertificates";
 import ThemeSettings from "./pages/admin/ThemeSettings";
+import ManageProfile from "./pages/admin/ManageProfile";
+import ManageAbout from "./pages/admin/ManageAbout";
+import ManageContact from "./pages/admin/ManageContact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,13 +49,19 @@ function AppRoutes() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/projects" element={<ManageProjects />} />
-          <Route path="/admin/blog" element={<ManageBlog />} />
-          <Route path="/admin/skills" element={<ManageSkills />} />
-          <Route path="/admin/certificates" element={<ManageCertificates />} />
-          <Route path="/admin/theme" element={<ThemeSettings />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="profile" element={<ManageProfile />} />
+            <Route path="about" element={<ManageAbout />} />
+            <Route path="projects" element={<ManageProjects />} />
+            <Route path="blog" element={<ManageBlog />} />
+            <Route path="skills" element={<ManageSkills />} />
+            <Route path="certificates" element={<ManageCertificates />} />
+            <Route path="contact" element={<ManageContact />} />
+            <Route path="theme" element={<ThemeSettings />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>

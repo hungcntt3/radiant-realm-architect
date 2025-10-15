@@ -12,7 +12,6 @@ import {
 } from "recharts";
 import { Eye, MessageSquare, FolderOpen, TrendingUp, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AdminLayout } from "./AdminLayout";
 import { analytics } from "@/data/fakeData";
 
 const stats = [
@@ -67,8 +66,7 @@ const projectsData = [
 
 export default function AdminDashboard() {
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -210,6 +208,5 @@ export default function AdminDashboard() {
             </Card>
           </motion.div>
       </div>
-    </AdminLayout>
   );
 }

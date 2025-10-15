@@ -36,8 +36,7 @@ export default function ManageSkills() {
   const categories = ["Frontend", "Backend", "Tools", "Design"];
 
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -145,6 +144,5 @@ export default function ManageSkills() {
           ))}
         </div>
       </div>
-    </AdminLayout>
   );
 }

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { blogPosts as initialBlogPosts } from "@/data/fakeData";
-import { AdminLayout } from "./AdminLayout";
 
 export default function ManageBlog() {
   const [blogPosts, setBlogPosts] = useState(initialBlogPosts);
@@ -26,8 +25,7 @@ export default function ManageBlog() {
   };
 
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -159,6 +157,5 @@ export default function ManageBlog() {
           </div>
         </div>
       </div>
-    </AdminLayout>
   );
 }

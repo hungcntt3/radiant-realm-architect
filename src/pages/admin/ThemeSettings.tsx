@@ -38,8 +38,7 @@ export default function ThemeSettings() {
   ];
 
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -257,6 +256,5 @@ export default function ThemeSettings() {
           </Button>
         </motion.div>
       </div>
-    </AdminLayout>
   );
 }

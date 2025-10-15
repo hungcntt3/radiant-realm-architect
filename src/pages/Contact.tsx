@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { personalInfo } from "@/data/fakeData";
 
 export default function Contact() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -38,19 +39,19 @@ export default function Contact() {
     {
       icon: Mail,
       label: "Email",
-      value: "hello@example.com",
-      href: "mailto:hello@example.com",
+      value: personalInfo.email,
+      href: `mailto:${personalInfo.email}`,
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+1 (555) 123-4567",
-      href: "tel:+15551234567",
+      value: personalInfo.phone,
+      href: `tel:${personalInfo.phone.replace(/\D/g, "")}`,
     },
     {
       icon: MapPin,
       label: "Location",
-      value: "San Francisco, CA",
+      value: personalInfo.location,
       href: "#",
     },
   ];

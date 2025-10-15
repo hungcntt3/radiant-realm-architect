@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
+import { personalInfo } from "@/data/fakeData";
 
 export default function Home() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -61,7 +62,7 @@ export default function Home() {
                 className="text-5xl md:text-7xl font-bold mb-6"
               >
                 Hi, I'm{" "}
-                <span className="text-gradient">Your Name</span>
+                <span className="text-gradient">{personalInfo.name}</span>
               </motion.h1>
 
               <motion.p
@@ -70,7 +71,7 @@ export default function Home() {
                 transition={{ delay: 0.4 }}
                 className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
               >
-                A passionate developer crafting beautiful and functional digital experiences
+                {personalInfo.title}
               </motion.p>
 
               <motion.div

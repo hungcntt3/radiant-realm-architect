@@ -26,8 +26,7 @@ export default function ManageCertificates() {
   };
 
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -135,6 +134,5 @@ export default function ManageCertificates() {
           ))}
         </div>
       </div>
-    </AdminLayout>
   );
 }

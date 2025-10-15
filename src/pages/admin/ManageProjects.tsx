@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { projects as initialProjects } from "@/data/fakeData";
-import { AdminLayout } from "./AdminLayout";
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState(initialProjects);
@@ -26,8 +25,7 @@ export default function ManageProjects() {
   };
 
   return (
-    <AdminLayout>
-      <div className="p-8">
+      <div className="space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -131,6 +129,5 @@ export default function ManageProjects() {
           ))}
         </div>
       </div>
-    </AdminLayout>
   );
 }

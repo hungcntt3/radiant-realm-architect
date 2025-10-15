@@ -236,3 +236,98 @@ export const analytics = {
   postsChange: 5,
   contactsChange: 18,
 };
+
+export const personalInfo = {
+  name: "Your Name",
+  title: "Full Stack Developer & UI/UX Designer",
+  email: "hello@example.com",
+  phone: "+1 (555) 123-4567",
+  location: "San Francisco, CA",
+  bio: `<p>I'm a passionate developer with a love for creating beautiful, functional, and user-friendly digital experiences. With years of experience in web development, I've worked on projects ranging from small business websites to large-scale enterprise applications.</p>
+<p>When I'm not coding, you can find me exploring new technologies, contributing to open source, or sharing my knowledge through blog posts and tutorials.</p>`,
+  cvUrl: "/cv/resume.pdf",
+  avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&q=80",
+};
+
+export const socialLinks = [
+  { id: 1, platform: "GitHub", url: "https://github.com", icon: "Github" },
+  { id: 2, platform: "LinkedIn", url: "https://linkedin.com", icon: "Linkedin" },
+  { id: 3, platform: "Twitter", url: "https://twitter.com", icon: "Twitter" },
+  { id: 4, platform: "Instagram", url: "https://instagram.com", icon: "Instagram" },
+  { id: 5, platform: "Dribbble", url: "https://dribbble.com", icon: "Dribbble" },
+];
+
+export const timeline = [
+  {
+    id: 1,
+    year: "2024",
+    title: "Senior Developer",
+    company: "Tech Company",
+    description: "Leading development of cutting-edge web applications",
+  },
+  {
+    id: 2,
+    year: "2022",
+    title: "Full Stack Developer",
+    company: "Startup Inc",
+    description: "Built scalable solutions for various clients",
+  },
+  {
+    id: 3,
+    year: "2020",
+    title: "Junior Developer",
+    company: "Digital Agency",
+    description: "Started my journey in web development",
+  },
+  {
+    id: 4,
+    year: "2019",
+    title: "Graduated",
+    company: "University",
+    description: "Computer Science degree with honors",
+  },
+];
+
+export const values = [
+  { id: 1, text: "Clean, maintainable code" },
+  { id: 2, text: "User-centered design" },
+  { id: 3, text: "Continuous learning" },
+  { id: 4, text: "Open source contribution" },
+  { id: 5, text: "Team collaboration" },
+  { id: 6, text: "Performance optimization" },
+];
+
+export const contactMessages = [
+  {
+    id: 1,
+    name: "John Smith",
+    email: "john@example.com",
+    message: "Hi! I'd like to discuss a potential project collaboration.",
+    date: "2024-03-20",
+    read: false,
+  },
+  {
+    id: 2,
+    name: "Sarah Johnson",
+    email: "sarah@company.com",
+    message: "Your portfolio is amazing! Would love to connect.",
+    date: "2024-03-18",
+    read: true,
+  },
+  {
+    id: 3,
+    name: "Mike Chen",
+    email: "mike@startup.io",
+    message: "We're looking for a developer for our new project. Are you available?",
+    date: "2024-03-15",
+    read: true,
+  },
+  {
+    id: 4,
+    name: "Emily Davis",
+    email: "emily@design.co",
+    message: "I came across your work and I'm really impressed. Let's talk!",
+    date: "2024-03-12",
+    read: false,
+  },
+];
