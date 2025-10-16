@@ -1,73 +1,198 @@
-# Welcome to your Lovable project
+# Portfolio Website với Admin Dashboard
 
-## Project info
+Website Portfolio cá nhân hiện đại được xây dựng với ReactJS, TailwindCSS, và Framer Motion, kết hợp với backend API đầy đủ.
 
-**URL**: https://lovable.dev/projects/bea0c7e0-48ac-4254-bcb0-ed61452f08c5
+## 🚀 Tính năng
 
-## How can I edit this code?
+### Frontend (Portfolio)
+- ✨ Hero section với animation đẹp mắt
+- 📝 Trang About với timeline và core values
+- 💼 Projects showcase với grid layout
+- 📚 Blog system với danh sách bài viết
+- 🎓 Certificates display
+- 💪 Skills với progress bars
+- 📧 Contact form
+- 🌓 Dark/Light mode
 
-There are several ways of editing your application.
+### Admin Dashboard
+- 🔐 Authentication với JWT
+- 📊 Dashboard với analytics và charts
+- ✏️ CRUD đầy đủ cho:
+  - Projects
+  - Blog Posts
+  - Skills
+  - Certificates
+  - Profile
+  - About
+  - Contact messages
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/bea0c7e0-48ac-4254-bcb0-ed61452f08c5) and start prompting.
+- **Frontend**: React 18, TypeScript, Vite
+- **UI**: TailwindCSS, shadcn/ui
+- **Animation**: Framer Motion
+- **Charts**: Recharts
+- **API Client**: Axios
+- **Routing**: React Router v6
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📦 Cài đặt
 
-**Use your preferred IDE**
+\`\`\`bash
+# Clone repository
+git clone <your-repo-url>
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Cài đặt dependencies
+npm install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Tạo file .env từ .env.example
+cp .env.example .env
 
-Follow these steps:
+# Cập nhật API URL trong .env
+VITE_API_BASE_URL=http://localhost:3000
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Chạy development server
 npm run dev
-```
+\`\`\`
 
-**Edit a file directly in GitHub**
+## 🔧 Configuration
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Environment Variables
 
-**Use GitHub Codespaces**
+Tạo file \`.env\` trong thư mục root với nội dung:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+\`\`\`env
+VITE_API_BASE_URL=http://localhost:3000
+\`\`\`
 
-## What technologies are used for this project?
+### API Endpoints
 
-This project is built with:
+API backend cần implement các endpoints theo swagger.json:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- \`POST /api/auth/register\` - Đăng ký user
+- \`POST /api/auth/login\` - Đăng nhập
+- \`GET /api/auth/me\` - Get current user
+- \`GET /api/profiles\` - Get profile
+- \`PUT /api/profiles\` - Update profile
+- \`GET/PUT/DELETE /api/about\` - Quản lý about
+- \`GET /api/projects\` - Get projects list
+- \`POST /api/projects\` - Create project
+- \`PUT /api/projects/:id\` - Update project
+- \`DELETE /api/projects/:id\` - Delete project
+- \`GET /api/posts\` - Get blog posts
+- \`POST /api/posts\` - Create post
+- \`PUT /api/posts/:id\` - Update post
+- \`DELETE /api/posts/:id\` - Delete post
+- \`GET /api/skills\` - Get skills
+- \`POST /api/skills\` - Create skill
+- \`PUT /api/skills/:id\` - Update skill
+- \`DELETE /api/skills/:id\` - Delete skill
+- \`GET /api/certificates\` - Get certificates
+- \`POST /api/certificates\` - Create certificate
+- \`PUT /api/certificates/:id\` - Update certificate
+- \`DELETE /api/certificates/:id\` - Delete certificate
+- \`GET /api/dashboard\` - Get dashboard stats
+- \`GET /api/dashboard/weekly-views\` - Get weekly views data
+- \`GET /api/dashboard/projects-timeline\` - Get projects timeline
+- \`GET /api/contact\` - Get contact messages
+- \`POST /api/contact\` - Create contact message
 
-## How can I deploy this project?
+## 🔐 Authentication
 
-Simply open [Lovable](https://lovable.dev/projects/bea0c7e0-48ac-4254-bcb0-ed61452f08c5) and click on Share -> Publish.
+Hệ thống sử dụng JWT authentication:
 
-## Can I connect a custom domain to my Lovable project?
+1. Login qua \`/admin/login\`
+2. Token được lưu vào localStorage
+3. Mọi API request tự động gửi kèm token trong header: \`Authorization: Bearer <token>\`
+4. Khi token hết hạn, user sẽ được redirect về trang login
 
-Yes, you can!
+## 📝 Sử dụng
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Admin Dashboard
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Truy cập \`/admin/login\`
+2. Đăng nhập với email/password đã đăng ký qua API backend
+3. Quản lý nội dung qua các menu:
+   - Dashboard - Xem analytics
+   - Projects - Quản lý dự án
+   - Blog - Quản lý bài viết
+   - Skills - Quản lý kỹ năng
+   - Certificates - Quản lý chứng chỉ
+   - Profile - Cập nhật thông tin cá nhân
+   - About - Cập nhật about section
+   - Contact - Xem tin nhắn liên hệ
+   - Theme - Tùy chỉnh giao diện
+
+### Public Portfolio
+
+Người dùng có thể xem portfolio tại các routes:
+- \`/\` - Trang chủ
+- \`/about\` - Giới thiệu
+- \`/skills\` - Kỹ năng
+- \`/projects\` - Dự án
+- \`/certificates\` - Chứng chỉ
+- \`/blog\` - Blog
+- \`/blog/:id\` - Chi tiết bài viết
+- \`/contact\` - Liên hệ
+
+## 🏗️ Cấu trúc Project
+
+\`\`\`
+src/
+├── components/          # Reusable components
+│   ├── ui/             # shadcn/ui components
+│   ├── Navbar.tsx
+│   ├── Footer.tsx
+│   └── ...
+├── pages/              # Page components
+│   ├── admin/          # Admin dashboard pages
+│   └── ...             # Public pages
+├── services/           # API services
+│   ├── auth.service.ts
+│   ├── profile.service.ts
+│   ├── project.service.ts
+│   ├── post.service.ts
+│   ├── skill.service.ts
+│   ├── certificate.service.ts
+│   ├── dashboard.service.ts
+│   └── contact.service.ts
+├── lib/
+│   ├── api.ts          # Axios instance
+│   └── utils.ts
+├── data/
+│   └── fakeData.ts     # Fake data (fallback, không dùng nữa)
+└── index.css           # Global styles
+\`\`\`
+
+## 🎨 Customization
+
+### Theme Colors
+
+Edit \`src/index.css\` để thay đổi color scheme:
+
+\`\`\`css
+:root {
+  --primary: ...;
+  --secondary: ...;
+  --accent: ...;
+  /* ... */
+}
+\`\`\`
+
+### Animations
+
+Tất cả animations sử dụng Framer Motion. Customize tại các component tương ứng.
+
+## 🔗 API Integration
+
+Tất cả các service đã được tạo sẵn trong thư mục \`src/services/\`. Chỉ cần:
+1. Cấu hình \`VITE_API_BASE_URL\` trong file \`.env\`
+2. Backend API implement đúng các endpoints theo swagger.json
+3. Mọi thứ sẽ hoạt động tự động
+
+## 📄 License
+
+MIT License
+
+## 👨‍💻 Developer
+
+Portfolio template được tạo bởi Lovable AI

@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { authService } from "@/services/auth.service";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -16,29 +17,35 @@ export default function AdminLogin() {
     password: "",
   });
 
+  useEffect(() => {
+    // Redirect if already logged in
+    if (authService.isAuthenticated()) {
+      navigate("/admin/dashboard");
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate authentication
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Demo credentials
-    if (formData.email === "admin@example.com" && formData.password === "admin123") {
+    try {
+      await authService.login(formData);
+      
       toast({
-        title: "Welcome back!",
-        description: "Login successful",
+        title: "Đăng nhập thành công!",
+        description: "Chào mừng bạn trở lại dashboard",
       });
       navigate("/admin/dashboard");
-    } else {
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.error?.message || "Email hoặc mật khẩu không đúng";
       toast({
-        title: "Login failed",
-        description: "Invalid credentials",
+        title: "Đăng nhập thất bại",
+        description: errorMessage,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -91,11 +98,9 @@ export default function AdminLogin() {
 
           {/* Demo Credentials */}
           <div className="mb-6 p-4 rounded-lg bg-secondary/50 border border-border">
-            <p className="text-sm font-medium mb-2">Demo Credentials:</p>
+            <p className="text-sm font-medium mb-2">Gợi ý:</p>
             <p className="text-sm text-muted-foreground">
-              Email: admin@example.com
-              <br />
-              Password: admin123
+              Vui lòng sử dụng email và mật khẩu đã đăng ký từ API backend
             </p>
           </div>
 

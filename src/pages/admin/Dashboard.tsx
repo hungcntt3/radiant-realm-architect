@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -12,59 +13,91 @@ import {
 } from "recharts";
 import { Eye, MessageSquare, FolderOpen, TrendingUp, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { analytics } from "@/data/fakeData";
-
-const stats = [
-  {
-    title: "Total Views",
-    value: analytics.totalViews.toLocaleString(),
-    change: `+${analytics.viewsChange}%`,
-    icon: Eye,
-    color: "text-blue-500",
-  },
-  {
-    title: "Projects",
-    value: analytics.totalProjects.toString(),
-    change: `+${analytics.projectsChange}`,
-    icon: FolderOpen,
-    color: "text-purple-500",
-  },
-  {
-    title: "Blog Posts",
-    value: analytics.totalBlogPosts.toString(),
-    change: `+${analytics.postsChange}`,
-    icon: MessageSquare,
-    color: "text-green-500",
-  },
-  {
-    title: "Certificates",
-    value: analytics.totalCertificates.toString(),
-    change: "+2",
-    icon: Award,
-    color: "text-orange-500",
-  },
-];
-
-const viewsData = [
-  { name: "Mon", views: 400 },
-  { name: "Tue", views: 300 },
-  { name: "Wed", views: 600 },
-  { name: "Thu", views: 800 },
-  { name: "Fri", views: 500 },
-  { name: "Sat", views: 700 },
-  { name: "Sun", views: 900 },
-];
-
-const projectsData = [
-  { name: "Jan", projects: 4 },
-  { name: "Feb", projects: 6 },
-  { name: "Mar", projects: 8 },
-  { name: "Apr", projects: 5 },
-  { name: "May", projects: 9 },
-  { name: "Jun", projects: 7 },
-];
+import { dashboardService, DashboardStats, WeeklyViewsData, ProjectsTimelineData } from "@/services/dashboard.service";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminDashboard() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [weeklyViews, setWeeklyViews] = useState<WeeklyViewsData[]>([]);
+  const [projectsTimeline, setProjectsTimeline] = useState<ProjectsTimelineData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  const loadDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      const [statsRes, weeklyRes, timelineRes] = await Promise.all([
+        dashboardService.getStats(),
+        dashboardService.getWeeklyViews(),
+        dashboardService.getProjectsTimeline(),
+      ]);
+      
+      setStats(statsRes.data.stats);
+      setWeeklyViews(weeklyRes.data.weeklyViews);
+      setProjectsTimeline(timelineRes.data.projectsTimeline);
+    } catch (error: any) {
+      toast({
+        title: "Lỗi tải dữ liệu",
+        description: error.response?.data?.error?.message || "Không thể tải dữ liệu dashboard",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading || !stats) {
+    return (
+      <div className="space-y-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
+          <p className="text-muted-foreground">Loading your portfolio overview...</p>
+        </div>
+        <div className="flex items-center justify-center h-96">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Đang tải dữ liệu...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const statsCards = [
+    {
+      title: "Total Views",
+      value: stats.totalViews.toLocaleString(),
+      change: `+${stats.growthRates.viewsGrowth}%`,
+      icon: Eye,
+      color: "text-blue-500",
+    },
+    {
+      title: "Projects",
+      value: stats.totalProjects.toString(),
+      change: `+${stats.growthRates.projectsGrowth}%`,
+      icon: FolderOpen,
+      color: "text-purple-500",
+    },
+    {
+      title: "Blog Posts",
+      value: stats.totalPosts.toString(),
+      change: `+${stats.growthRates.postsGrowth}%`,
+      icon: MessageSquare,
+      color: "text-green-500",
+    },
+    {
+      title: "Certificates",
+      value: stats.totalCertificates.toString(),
+      change: "+0%",
+      icon: Award,
+      color: "text-orange-500",
+    },
+  ];
+
   return (
       <div className="space-y-8">
           {/* Header */}
@@ -81,7 +114,7 @@ export default function AdminDashboard() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {stats.map((stat, i) => (
+            {statsCards.map((stat, i) => (
               <motion.div
                 key={stat.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -120,9 +153,9 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={viewsData}>
+                    <BarChart data={weeklyViews}>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                      <XAxis dataKey="name" className="text-muted-foreground" />
+                      <XAxis dataKey="week" className="text-muted-foreground" />
                       <YAxis className="text-muted-foreground" />
                       <Tooltip
                         contentStyle={{
@@ -150,9 +183,9 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={projectsData}>
+                    <LineChart data={projectsTimeline}>
                       <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                      <XAxis dataKey="name" className="text-muted-foreground" />
+                      <XAxis dataKey="month" className="text-muted-foreground" />
                       <YAxis className="text-muted-foreground" />
                       <Tooltip
                         contentStyle={{
@@ -163,10 +196,19 @@ export default function AdminDashboard() {
                       />
                       <Line
                         type="monotone"
-                        dataKey="projects"
+                        dataKey="created"
                         stroke="hsl(var(--primary))"
                         strokeWidth={3}
                         dot={{ fill: "hsl(var(--primary))", r: 6 }}
+                        name="Created"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="completed"
+                        stroke="hsl(var(--chart-2))"
+                        strokeWidth={3}
+                        dot={{ fill: "hsl(var(--chart-2))", r: 6 }}
+                        name="Completed"
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -189,19 +231,19 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {[
-                    { title: "Manage Projects", count: 24 },
-                    { title: "Manage Blog Posts", count: 42 },
-                    { title: "View Analytics", count: "12K+" },
+                    { title: "Projects Added (7 days)", count: stats.recentActivity.projectsAdded },
+                    { title: "Posts Published (7 days)", count: stats.recentActivity.postsPublished },
+                    { title: "Skills Added (7 days)", count: stats.recentActivity.skillsAdded },
                   ].map((action) => (
-                    <button
+                    <div
                       key={action.title}
-                      className="p-4 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-left"
+                      className="p-4 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors"
                     >
                       <div className="text-sm text-muted-foreground mb-1">
                         {action.title}
                       </div>
                       <div className="text-2xl font-bold">{action.count}</div>
-                    </button>
+                    </div>
                   ))}
                 </div>
               </CardContent>
