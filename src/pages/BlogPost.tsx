@@ -1,48 +1,52 @@
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { PageTransition } from "@/components/PageTransition";
 import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { postService, Post } from "@/services/post.service";
 
 export default function BlogPost() {
   const { id } = useParams();
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // In a real app, fetch post data based on id
-  const post = {
-    title: "Building Modern Web Applications with React and TypeScript",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&q=80",
-    date: "2024-03-15",
-    readTime: "8 min read",
-    category: "Development",
-    content: `
-      <h2>Introduction</h2>
-      <p>TypeScript has become an essential tool in modern web development, especially when combined with React. In this comprehensive guide, we'll explore how to leverage TypeScript's powerful type system to build robust, scalable React applications.</p>
+  useEffect(() => {
+    const fetchPost = async () => {
+      if (!id) return;
+      try {
+        const response = await postService.getPostById(id);
+        setPost(response.data.post);
+        // Increment views
+        await postService.incrementViews(id);
+      } catch (error) {
+        console.error("Failed to fetch post:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [id]);
 
-      <h2>Why TypeScript with React?</h2>
-      <p>TypeScript brings several advantages to React development:</p>
-      <ul>
-        <li>Type safety catches errors at compile time</li>
-        <li>Better IDE support with autocomplete and IntelliSense</li>
-        <li>Self-documenting code through type definitions</li>
-        <li>Easier refactoring and maintenance</li>
-      </ul>
+  if (loading) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen pt-20 flex items-center justify-center">
+          Loading post...
+        </div>
+      </PageTransition>
+    );
+  }
 
-      <h2>Getting Started</h2>
-      <p>Setting up a new React + TypeScript project is easier than ever. You can use Create React App with the TypeScript template, or modern tools like Vite for faster development experience.</p>
-
-      <h2>Best Practices</h2>
-      <p>Here are some key best practices when working with React and TypeScript:</p>
-      <ol>
-        <li>Define proper types for props and state</li>
-        <li>Use type inference where possible</li>
-        <li>Leverage utility types for common patterns</li>
-        <li>Keep types close to where they're used</li>
-      </ol>
-
-      <h2>Conclusion</h2>
-      <p>TypeScript significantly enhances the React development experience by providing type safety, better tooling, and improved code maintainability. Whether you're building a small project or a large-scale application, TypeScript is worth the investment.</p>
-    `,
-  };
+  if (!post) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen pt-20 flex items-center justify-center">
+          Post not found
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -71,7 +75,7 @@ export default function BlogPost() {
                 className="mb-8"
               >
                 <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  {post.category}
+                  {post.tags[0] || "Blog"}
                 </div>
 
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -82,7 +86,7 @@ export default function BlogPost() {
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     <span>
-                      {new Date(post.date).toLocaleDateString("en-US", {
+                      {new Date(post.created_at).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
@@ -91,7 +95,7 @@ export default function BlogPost() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    <span>{post.readTime}</span>
+                    <span>{post.views} views</span>
                   </div>
                   <Button variant="ghost" size="sm" className="hover-scale">
                     <Share2 className="w-4 h-4 mr-2" />
@@ -101,18 +105,20 @@ export default function BlogPost() {
               </motion.div>
 
               {/* Featured Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mb-12 rounded-2xl overflow-hidden"
-              >
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-auto"
-                />
-              </motion.div>
+              {post.cover_image && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="mb-12 rounded-2xl overflow-hidden"
+                >
+                  <img
+                    src={post.cover_image}
+                    alt={post.title}
+                    className="w-full h-auto"
+                  />
+                </motion.div>
+              )}
 
               {/* Content */}
               <motion.div

@@ -4,10 +4,27 @@ import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/data/fakeData";
+import { useEffect, useState } from "react";
+import { postService, Post } from "@/services/post.service";
 
 export default function Blog() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await postService.getPosts({ status: 'published' });
+        setPosts(response.data.posts);
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
 
   return (
     <PageTransition>
@@ -33,8 +50,13 @@ export default function Blog() {
         {/* Blog Posts Grid */}
         <section ref={ref} className="py-20">
           <div className="container mx-auto px-4">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post, i) => (
+            {loading ? (
+              <div className="text-center py-20">Loading posts...</div>
+            ) : posts.length === 0 ? (
+              <div className="text-center py-20">No posts found</div>
+            ) : (
+              <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {posts.map((post, i) => (
                 <motion.article
                   key={post.id}
                   initial={{ opacity: 0, y: 40 }}
@@ -46,14 +68,14 @@ export default function Blog() {
                       {/* Image */}
                       <div className="relative h-48 overflow-hidden">
                         <img
-                          src={post.image}
+                          src={post.cover_image || "https://via.placeholder.com/400x300"}
                           alt={post.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
                         <div className="absolute top-4 right-4">
                           <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-medium">
-                            {post.category}
+                            {post.tags[0] || "Blog"}
                           </span>
                         </div>
                       </div>
@@ -64,7 +86,7 @@ export default function Blog() {
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             <span>
-                              {new Date(post.date).toLocaleDateString("en-US", {
+                              {new Date(post.created_at).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
                                 year: "numeric",
@@ -73,7 +95,7 @@ export default function Blog() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
-                            <span>{post.readTime}</span>
+                            <span>{post.views} views</span>
                           </div>
                         </div>
 
@@ -82,7 +104,7 @@ export default function Blog() {
                         </h2>
 
                         <p className="text-muted-foreground mb-4 line-clamp-3">
-                          {post.excerpt}
+                          {post.content.substring(0, 150)}...
                         </p>
 
                         <Button
@@ -96,8 +118,9 @@ export default function Blog() {
                     </div>
                   </Link>
                 </motion.article>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </div>

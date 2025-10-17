@@ -4,10 +4,27 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
-import { personalInfo } from "@/data/fakeData";
+import { useEffect, useState } from "react";
+import { profileService, Profile } from "@/services/profile.service";
 
 export default function Home() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await profileService.getProfile();
+        setProfile(response.data.profile);
+      } catch (error) {
+        console.error("Failed to fetch profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <PageTransition>
@@ -61,8 +78,14 @@ export default function Home() {
                 transition={{ delay: 0.3 }}
                 className="text-5xl md:text-7xl font-bold mb-6"
               >
-                Hi, I'm{" "}
-                <span className="text-gradient">{personalInfo.name}</span>
+                {loading ? (
+                  "Loading..."
+                ) : (
+                  <>
+                    Hi, I'm{" "}
+                    <span className="text-gradient">{profile?.name || "Developer"}</span>
+                  </>
+                )}
               </motion.h1>
 
               <motion.p
@@ -71,7 +94,7 @@ export default function Home() {
                 transition={{ delay: 0.4 }}
                 className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
               >
-                {personalInfo.title}
+                {loading ? "Loading profile..." : profile?.bio || "Full Stack Developer"}
               </motion.p>
 
               <motion.div

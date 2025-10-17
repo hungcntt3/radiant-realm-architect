@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageTransition } from "@/components/PageTransition";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github } from "lucide-react";
@@ -11,11 +11,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { projects } from "@/data/fakeData";
+import { projectService, Project } from "@/services/project.service";
 
 export default function Projects() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await projectService.getProjects();
+        setProjects(response.data.projects);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   return (
     <PageTransition>
@@ -41,8 +57,13 @@ export default function Projects() {
         {/* Projects Grid */}
         <section ref={ref} className="py-20">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {projects.map((project, i) => (
+            {loading ? (
+              <div className="text-center py-20">Loading projects...</div>
+            ) : projects.length === 0 ? (
+              <div className="text-center py-20">No projects found</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                {projects.map((project, i) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 40 }}
@@ -54,7 +75,7 @@ export default function Projects() {
                   {/* Project Image */}
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={project.image}
+                      src={project.thumbnail || "https://via.placeholder.com/400x300"}
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
@@ -84,34 +105,25 @@ export default function Projects() {
 
                     {/* Links */}
                     <div className="flex gap-3">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(project.github, "_blank");
-                        }}
-                      >
-                        <Github className="w-4 h-4 mr-2" />
-                        Code
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="flex-1 gradient-primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.open(project.demo, "_blank");
-                        }}
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Demo
-                      </Button>
+                      {project.link && (
+                        <Button
+                          size="sm"
+                          className="flex-1 gradient-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(project.link, "_blank");
+                          }}
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          View Project
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </motion.div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -126,13 +138,15 @@ export default function Projects() {
                 </DialogHeader>
 
                 <div className="space-y-4">
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full h-64 object-cover rounded-lg"
-                  />
+                  {selectedProject.thumbnail && (
+                    <img
+                      src={selectedProject.thumbnail}
+                      alt={selectedProject.title}
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
+                  )}
 
-                  <p className="text-muted-foreground">{selectedProject.longDescription}</p>
+                  <p className="text-muted-foreground">{selectedProject.description}</p>
 
                   <div>
                     <h4 className="font-semibold mb-3">Technologies Used:</h4>
@@ -148,23 +162,17 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  <div className="flex gap-3 pt-4">
-                    <Button
-                      className="flex-1"
-                      variant="outline"
-                      onClick={() => window.open(selectedProject.github, "_blank")}
-                    >
-                      <Github className="w-4 h-4 mr-2" />
-                      View Source Code
-                    </Button>
-                    <Button
-                      className="flex-1 gradient-primary"
-                      onClick={() => window.open(selectedProject.demo, "_blank")}
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
-                    </Button>
-                  </div>
+                  {selectedProject.link && (
+                    <div className="flex gap-3 pt-4">
+                      <Button
+                        className="w-full gradient-primary"
+                        onClick={() => window.open(selectedProject.link, "_blank")}
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        View Project
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </>
             )}

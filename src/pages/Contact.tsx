@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { personalInfo } from "@/data/fakeData";
+import { contactService } from "@/services/contact.service";
 
 export default function Contact() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -23,35 +23,41 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    toast({
-      title: "Message sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      await contactService.createMessage(formData);
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+      });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
     {
       icon: Mail,
       label: "Email",
-      value: personalInfo.email,
-      href: `mailto:${personalInfo.email}`,
+      value: "contact@example.com",
+      href: `mailto:contact@example.com`,
     },
     {
       icon: Phone,
       label: "Phone",
-      value: personalInfo.phone,
-      href: `tel:${personalInfo.phone.replace(/\D/g, "")}`,
+      value: "+1 234 567 890",
+      href: `tel:+1234567890`,
     },
     {
       icon: MapPin,
       label: "Location",
-      value: personalInfo.location,
+      value: "Your Location",
       href: "#",
     },
   ];
